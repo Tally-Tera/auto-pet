@@ -196,4 +196,28 @@ module.exports = function AutoPet(mod) {
 			mod.command.message("You don't have any pet food in inventory!");
 		}
 	}
+
+	mod.hook('S_ABNORMALITY_BEGIN', 4, (event) => {
+		if (!mod.game.me.is(event.target)) return;
+		
+		if (event.id == 13077 || event.id == 13117 || event.id == 13037) { // max magic amp, max physical amp, max power
+			const pet = mod.settings.characters[characterId];
+			if (mod.settings.enabled && pet && pet.enabled && pet.bondSkill) {
+				mod.clearTimeout(petSkillTimeout);
+				petSkillTimeout = mod.setTimeout(usePetSkill, 270000);
+			}
+		}
+	});
+
+	mod.hook('S_ABNORMALITY_REFRESH', 2, (event) => {
+		if (!mod.game.me.is(event.target)) return;
+		
+		if (event.id == 13077 || event.id == 13117 || event.id == 13037) { // max magic amp, max physical amp, max power
+			const pet = mod.settings.characters[characterId];
+			if (mod.settings.enabled && pet && pet.enabled && pet.bondSkill) {
+				mod.clearTimeout(petSkillTimeout);
+				petSkillTimeout = mod.setTimeout(usePetSkill, 270000);
+			}
+		}
+	});
 };
